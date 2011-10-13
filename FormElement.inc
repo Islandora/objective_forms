@@ -235,13 +235,15 @@ class FormElement implements ArrayAccess {
    *   TRUE if the function was called for all decendants, FALSE otherwise.
    */
   public function eachDecendant($function) {
-    $param_arr = array_slice(func_get_args(), 1); // Remove function name from the argument list
+    $func_args = func_get_args();
+    $param_arr = array_slice($func_args, 1); // Remove function name from the argument list
+    $func_args = func_get_args();
     foreach ($this->children as $child) {
       $args = array_merge(array($child), $param_arr);
       if (call_user_func_array($function, $args) === FALSE) {
         return FALSE; // End processing
       }
-      if (call_user_func_array(array($child, 'eachDecendant'), func_get_args()) === FALSE) { // Recurse...
+      if (call_user_func_array(array($child, 'eachDecendant'), $func_args) === FALSE) { // Recurse...
         return FALSE; // End processing
       }
     }
