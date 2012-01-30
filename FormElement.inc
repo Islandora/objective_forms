@@ -9,6 +9,7 @@
 module_load_include('inc', 'php_lib', 'ReflectionHelpers');
 module_load_include('inc', 'php_lib', 'ReadOnlyProtectedMembers');
 module_load_include('inc', 'objective_forms', 'Utils');
+module_load_include('inc', 'objective_forms', 'FormElementRegistry');
 
 /**
  * Encapsulates drupal form elements.
@@ -41,18 +42,28 @@ class FormElement implements ArrayAccess {
   public $controls;
 
   /**
+   * Element Registry.
+   * 
+   * @var FormElementRegistry 
+   */
+  protected $registry;
+
+  /**
    * Instantiate's a FormElement.
    * 
    * @param array $form
    *   Drupal form definition. 
    */
-  public function __construct(array $form = NULL) {
+  public function __construct(FormElementRegistry $registry = NULL /* yuck fix this.. */, array $form = NULL) {
     $this->protected = new ReadOnlyProtectedMembers(array('parent' => NULL, 'hash' => NULL));
+    $this->registry = $registry;
     $this->controls = array();
     $this->children = array();
     $this->initialize($form);
     $this->hash = isset($this->controls['#hash']) ? $this->controls['#hash'] : spl_object_hash($this);
-    module_invoke_all('form_element_created', $this); // Some modules will want to register all created FormElements.
+    if ($this->registry) { // Deals with this case this class is used in a non user context ....
+      $this->registry->registerCreated($this);
+    }
   }
 
   /**
@@ -94,7 +105,7 @@ class FormElement implements ArrayAccess {
   protected function initializeChildren(array &$form) {
     $children = element_children($form);
     foreach ($children as $key) {
-      $child = new FormElement($form[$key]);
+      $child = new FormElement($this->registry, $form[$key]);
       $this->adopt($child, $key);
     }
   }
@@ -124,7 +135,9 @@ class FormElement implements ArrayAccess {
     foreach ($children as $key => $child) { // Clone Children.
       $this->adopt(clone $child, $key);
     }
-    module_invoke_all('form_element_cloned', $original_hash, $this); // Some modules will want to register all cloned FormElements.
+    if ($this->registry) { // Deals with this case this class is used in a non user context ....
+      $this->registry->registerClone($original_hash, $this);
+    } 
   }
 
   /**

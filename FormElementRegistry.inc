@@ -3,25 +3,18 @@
 /**
  * @file
  *
- * Defines a singleton class used to keep track of all the FormElements created/cloned during 
+ * Defines a class used to keep track of all the FormElements created/cloned during 
  * the Form rendering/submission process.
  */
 module_load_include('inc', 'objective_forms', 'FormElement');
 module_load_include('inc', 'objective_forms', 'FormStorage');
 
 /**
- * A singleton class that holds a flat array of all FormElements created/cloned during 
+ * A class that holds a flat array of all FormElements created/cloned during 
  * the Form rendering/submission process. Also the history of cloned form elements are tracked so that 
  * the original FormElement can be retrieved.
  */
 class FormElementRegistry {
-
-  /**
-   * This singleton instance of this class.
-   * 
-   * @var Registry
-   */
-  private static $instance = NULL;
 
   /**
    * A flat array of all elements, where the key is the FormElement's hash.
@@ -40,55 +33,11 @@ class FormElementRegistry {
   private $cloned;
 
   /**
-   * Checks if the FormElementRegistry singleton instance has been created.
-   *
-   * @return boolean
-   */
-  public static function exists() {
-    return isset(self::$instance);
-  }
-
-  /**
-   * Create the FormElementRegistry singleton.
-   */
-  private static function create() {
-    if (FormStorage::exists()) { // This block doesn't get run during unit tests. But should during normal use.
-      $storage = FormStorage::getInstance();
-      self::$instance = isset($storage->elementRegistry) ? $storage->elementRegistry : new FormElementRegistry();
-      $storage->elementRegistry = self::$instance;
-    }
-    else {
-      self::$instance = new FormElementRegistry(); // Create
-    }
-  }
-
-  /**
-   * Creates a singleton reference to the registry.
-   * 
-   * Stores a new FormElementRegistry in the form storage.
-   * 
-   * @staticvar Registry $instance
-   * @return Registry 
-   */
-  public static function getInstance() {
-    if (!self::exists()) {
-      self::create();
-    }
-    return self::$instance;
-  }
-
-  /**
    * Instantiate the FormElementRegistry.
    */
-  private function __construct() {
+  public function __construct() {
     $this->elements = array();
-  }
-
-  /**
-   * Set the instance on wakeup. 
-   */
-  public function __wakeup() {
-    self::$instance = $this;
+    $this->cloned = array();
   }
 
   /**

@@ -21,7 +21,14 @@ class FormValueTracker {
    * 
    * @var array 
    */
-  public $values;
+  protected $values;
+
+  /**
+   * The form element registry used to get properties for given form elements.
+   * 
+   * @var FormElementRegistry 
+   */
+  protected $registry;
 
   /**
    * A reference to a position in $values.
@@ -42,10 +49,11 @@ class FormValueTracker {
    * 
    * @param array $values 
    */
-  public function __construct(array &$values) {
+  public function __construct(array &$values, FormElementRegistry $registry) {
     $this->values = &$values;
     $this->current = &$this->values;
     $this->track = false; // Default value is false.
+    $this->registry = $registry;
   }
 
   /**
@@ -80,7 +88,7 @@ class FormValueTracker {
       return array_pop($parents);
     }
     else if (isset($element['#hash'])) {
-      $found = FormElementRegistry::getInstance()->get($element['#hash']);
+      $found = $this->registry->get($element['#hash']);
       if ($found) {
         return $found->getIndex();
       }

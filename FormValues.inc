@@ -50,10 +50,10 @@ class FormValues {
    * @param array $root
    *   The elements to associate with submitted values.
    */
-  public function __construct(array &$form_state, array &$root) {
+  public function __construct(array &$form_state, array &$root, FormElementRegistry $registry) {
     $this->values = array();
     if (self::Exists($form_state)) {
-      $this->tracker = new FormValueTracker($form_state['values']);
+      $this->tracker = new FormValueTracker($form_state['values'], $registry);
       $this->setValues($root, $this->tracker);
     }
   }

@@ -3,7 +3,7 @@
 /**
  * @file
  *
- * Defines a singleton class that is used to persist data for Drupal Forms across requests. 
+ * Defines a class that is used to persist data for Drupal Forms across requests. 
  */
 
 /**
@@ -16,13 +16,6 @@ class FormStorage {
   const STORAGE_ROOT = 'objective_form_storage';
 
   /**
-   * This instance.
-   * 
-   * @var FormStorage
-   */
-  private static $instance = NULL;
-
-  /**
    * A reference to $form_state['storage'][STORAGE_ROOT], this is where all persistant data is kept.
    * 
    * @var array
@@ -30,50 +23,12 @@ class FormStorage {
   protected $storage;
 
   /**
-   * Initializes the FormStorage singleton, only needs to be called once.
-   * 
-   * @param array $form_state
-   * 
-   * @return FormStorage
-   *   The singleton instance.
-   */
-  public static function create(array &$form_state) {
-    if (!self::exists()) {
-      self::$instance = new FormStorage($form_state);
-    }
-    return self::$instance;
-  }
-
-  /**
-   * Checks if the FormStorage singleton has been initialized.
-   * 
-   * @return boolean
-   *   TRUE if the FormStorage instance exists, FALSE otherwise.
-   */
-  public static function exists() {
-    return isset(self::$instance);
-  }
-
-  /**
-   * Gets the FormStorage singleton instance.
-   * 
-   * @return FormStorage
-   *   The singleton instance.
-   */
-  public static function getInstance() {
-    if (!self::exists()) {
-      throw new Exception('Attempted to get FormStorage instance without first initializing it.');
-    }
-    return self::$instance;
-  }
-
-  /**
    * Creates the FormStorage Singleton
    * 
    * @param array $form_state
    *   The Drupal Form State.
    */
-  private function __construct(array &$form_state) {
+  public function __construct(array &$form_state) {
     $this->initializeFormState($form_state);
     $this->storage = &$form_state['storage'][self::STORAGE_ROOT];
   }
