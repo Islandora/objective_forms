@@ -3,8 +3,8 @@
 /**
  * @file
  *
- * Defines a class that allows drupal forms to be built via objects instead of arrays. Note that is still possible to 
- * build non functional drupal forms using this class, the same rules apply that would normally apply to a Drupal API 
+ * Defines a class that allows drupal forms to be built via objects instead of arrays. Note that is still possible to
+ * build non functional drupal forms using this class, the same rules apply that would normally apply to a Drupal API
  * Form.
  */
 module_load_include('inc', 'objective_forms', 'FormElement');
@@ -19,31 +19,31 @@ class Form implements ArrayAccess {
 
   /**
    * Stores persistent data.
-   * 
+   *
    * @var FormStorage
    */
   public $storage;
 
   /**
    * Registers every created/cloned FormElement.
-   * 
+   *
    * @var FormElementRegistry
    */
   public $registry;
 
   /**
    * The root FormElement.
-   * 
+   *
    * @var array
    */
   public $root;
 
   /**
    * Instantiate a Form.
-   * 
+   *
    * @param array $form
    *   The drupal form.
-   * @param array $form_state 
+   * @param array $form_state
    *   The drupal form state.
    */
   public function __construct(array $form, array &$form_state) {
@@ -57,10 +57,10 @@ class Form implements ArrayAccess {
 
   /**
    * Seaches the form for the given form element.
-   * 
+   *
    * @param hash $hash
    *   The unique #hash property that identifies the FormElement.
-   * 
+   *
    * @return FormElement
    */
   public function findElement($hash) {
@@ -69,10 +69,10 @@ class Form implements ArrayAccess {
 
   /**
    * Checks to see if the FormElement identified by its unique $hash exists in this form.
-   * 
+   *
    * @param hash $hash
    *   The unique #hash property that identifies the FormElement.
-   * 
+   *
    * @return boolean
    *   TRUE if the FormElement exists within the form, FALSE otherwise.
    */
@@ -82,10 +82,10 @@ class Form implements ArrayAccess {
 
   /**
    * Duplicates a FormElement identified by its unique $hash.
-   * 
-   * @param hash $hash 
+   *
+   * @param hash $hash
    *   The unique #hash property that identifies the FormElement.
-   * 
+   *
    * @return FormElement
    *   The cloned element if found, NULL is otherwise.
    */
@@ -99,10 +99,10 @@ class Form implements ArrayAccess {
 
   /**
    * Duplicates a FormElement identified by its unique $hash from its original definition.
-   * 
+   *
    * @param hash $hash
    *   The unique #hash property that identifies the FormElement.
-   * 
+   *
    * @return FormElement
    *   The cloned element if the original was found, NULL is otherwise.
    */
@@ -116,11 +116,11 @@ class Form implements ArrayAccess {
 
   /**
    * Remove the FormElement identified by its unique $hash from this form.
-   * 
+   *
    * @param hash $hash
    *   The unique #hash property that identifies the FormElement.
-   * 
-   * @return FormElement 
+   *
+   * @return FormElement
    *   The FormElement that was removed from this form if found, NULL otherwise.
    */
   public function remove($hash) {
@@ -133,9 +133,9 @@ class Form implements ArrayAccess {
 
   /**
    * Validates the form.
-   * 
+   *
    * @param array $form
-   * @param array $form_state 
+   * @param array $form_state
    */
   public function validate(array &$form, array &$form_state) {
     // Implemented in child classes.
@@ -143,7 +143,7 @@ class Form implements ArrayAccess {
 
   /**
    * Submits the form.
-   * 
+   *
    * @param array $form
    * @param array $form_state
    */
@@ -153,7 +153,7 @@ class Form implements ArrayAccess {
 
   /**
    * Outputs the form as an array, which can be used by the Drupal Form API.
-   * 
+   *
    * @return array
    */
   public function toArray(array &$form_state) {
@@ -168,9 +168,9 @@ class Form implements ArrayAccess {
 
   /**
    * Checks if a child element or property identified by $name exists.
-   * 
+   *
    * @param mixed $name
-   * 
+   *
    * @return boolean
    *   TRUE if the child element or property exists FALSE otherwise.
    */
@@ -180,8 +180,8 @@ class Form implements ArrayAccess {
 
   /**
    * Removes a child element or property identified by $name.
-   * 
-   * @param mixed $name 
+   *
+   * @param mixed $name
    */
   public function __unset($name) {
     unset($this->root->$name);
@@ -189,7 +189,7 @@ class Form implements ArrayAccess {
 
   /**
    * Gets a child element or property identified by $offset.
-   * 
+   *
    * @param mixed $name
    */
   public function __get($name) {
@@ -198,9 +198,9 @@ class Form implements ArrayAccess {
 
   /**
    * Add/Set a child element or property identified by $offset, with $value.
-   * 
+   *
    * @param mixed $name
-   * @param mixed $value 
+   * @param mixed $value
    */
   public function __set($name, $value) {
     $this->root->$name = $value;
@@ -208,11 +208,11 @@ class Form implements ArrayAccess {
 
   /**
    * Checks if a child element or property identified by $offset exists.
-   * 
+   *
    * @param mixed $offset
-   * 
+   *
    * @return boolean
-   *   TRUE if the child element or property exists FALSE otherwise. 
+   *   TRUE if the child element or property exists FALSE otherwise.
    */
   public function offsetExists($offset) {
     return $this->root->offsetExists($offset);
@@ -220,9 +220,9 @@ class Form implements ArrayAccess {
 
   /**
    * Gets a child element or property identified by $offset.
-   * 
-   * @param mixed $offset 
-   * 
+   *
+   * @param mixed $offset
+   *
    * @return mixed
    *   Gets a child element or property identified by $offset if it exists NULL otherwise.
    */
@@ -232,9 +232,9 @@ class Form implements ArrayAccess {
 
   /**
    * Add/Set a child element or property identified by $offset, with $value.
-   * 
+   *
    * @param mixed $offset
-   * @param mixed $value 
+   * @param mixed $value
    */
   public function offsetSet($offset, $value) {
     $this->root->offsetSet($offset, $value);
@@ -242,8 +242,8 @@ class Form implements ArrayAccess {
 
   /**
    * Removes a child element or property identified by $offset.
-   * 
-   * @param mixed $offset 
+   *
+   * @param mixed $offset
    */
   public function offsetUnset($offset) {
     $this->root->offsetUnset($offset);
@@ -251,7 +251,7 @@ class Form implements ArrayAccess {
 
   /**
    * Creates a string repersentation of this object.
-   * 
+   *
    * @return string
    */
   public function __toString() {
