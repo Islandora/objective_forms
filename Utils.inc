@@ -64,3 +64,41 @@ function has_hash(array &$element, $hash) {
   }
   return FALSE;
 }
+
+/**
+ * Gets the drupal form element name for the given element if possible.
+ * 
+ * Only works on processed form elements.
+ * 
+ * The name of the form element is based on the #parents property of your form element. 
+ * If it is array('foo', 'bar', 'baz') then 'foo][bar][baz' is the elements name.
+ * 
+ * @param array $element
+ *   The Drupal form element.
+ * 
+ * @return string
+ *   The Drupal style name for the given form element if possible, FALSE otherwise.
+ */
+function form_element_name(array $element) {
+  if (isset($element['#parents'])) {
+    return implode('][', $element['#parents']);
+  }
+  return FALSE;
+}
+
+/**
+ * Compares two Drupal form element names to determine if the second 
+ * argument is a child element of the first.
+ * 
+ * @param string $parent
+ *   A Drupal form element name for the assumed parent form element.
+ * 
+ * @param string $child
+ *   A Drupal form element name for the assumed child form element.
+ * 
+ * @return boolean
+ *   TRUE if the given element
+ */
+function form_element_is_child($parent, $child) {
+  return preg_match('/^' . preg_quote($parent) . '/', $child) != 0;
+}
