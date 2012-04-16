@@ -3,5 +3,5 @@ description = Provides functions and classes that allow Drupal Forms to be treat
 files[] = tests/form.test
 dependencies[] = php_lib
 package = Islandora Dependencies
-version = 6.x-dev
+version = 6.x-12.1-RC1
 core = 6.x
