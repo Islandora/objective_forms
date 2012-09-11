@@ -8,7 +8,7 @@ class ObjectiveForms_FormElementRegistry_TestCase extends DrupalUnitTestCase {
 
   /**
    * Get Test info.
-   * 
+   *
    * @return array
    *   Properties that are displayed in the test selection form.
    */
@@ -21,7 +21,7 @@ class ObjectiveForms_FormElementRegistry_TestCase extends DrupalUnitTestCase {
   }
 
   /**
-   * setUp() performs any pre-requisite tasks that need to happen. 
+   * setUp() performs any pre-requisite tasks that need to happen.
    */
   public function setUp() {
     // Enable any modules required for the test.

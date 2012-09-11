@@ -85,8 +85,8 @@ function objective_forms_test_load_files() {
   module_load_include('php', 'simpletest', 'drupal_web_test_case');
   $include_path = drupal_get_path('module', 'objective_forms') . "/tests";
   $dir = opendir($include_path);
-  if ($dir !== false) {
-    while (($file = readdir($dir)) !== false) {
+  if ($dir !== FALSE) {
+    while (($file = readdir($dir)) !== FALSE) {
       if (preg_match('/\.test$/', $file)) {
         require_once DRUPAL_ROOT . '/' . "$include_path/$file";
       }

@@ -2,7 +2,7 @@
 
 /**
  * @file
- * 
+ *
  * Unit Tests.
  */
 
@@ -13,7 +13,7 @@ class ObjectiveForms_FormElement_TestCase extends DrupalUnitTestCase {
 
   /**
    * Get Test info.
-   * 
+   *
    * @return array
    *   Properties that are displayed in the test selection form.
    */
@@ -26,7 +26,7 @@ class ObjectiveForms_FormElement_TestCase extends DrupalUnitTestCase {
   }
 
   /**
-   * setUp() performs any pre-requisite tasks that need to happen. 
+   * setUp() performs any pre-requisite tasks that need to happen.
    */
   public function setUp() {
     // Enable any modules required for the test.
@@ -83,7 +83,7 @@ class ObjectiveForms_FormElement_TestCase extends DrupalUnitTestCase {
   public function testSetProperties() {
     $form = array(
       '#type' => 'textfield',
-      '#access' => true,
+      '#access' => TRUE,
       '#after_build' => array('fake_function'),
       '#ahah' => array(
         'path' => 'poll/js',
@@ -93,32 +93,32 @@ class ObjectiveForms_FormElement_TestCase extends DrupalUnitTestCase {
       ),
       '#attributes' => array('class' => 'ui-form'),
       '#autocomplete_path' => '/xml/forms',
-      '#collapsed' => true,
-      '#collapsible' => false,
+      '#collapsed' => TRUE,
+      '#collapsible' => FALSE,
       '#cols' => 10,
       '#default_value' => 'testing',
       '#delta' => 10,
       '#description' => 'fake description',
-      '#disabled' => false,
+      '#disabled' => FALSE,
       '#element_validate' => array('fake_function'),
       '#field_prefix' => '<div>',
       '#field_suffix' => '</div>',
       '#maxlength' => 20,
-      '#multiple' => true,
+      '#multiple' => TRUE,
       '#options' => array('opt' => 'opt'),
       '#post_render' => array('fake_function'),
       '#prefix' => '<div>',
       '#pre_render' => array('fake_function'),
       '#process' => array('fake_function'),
-      '#required' => true,
-      '#resizable' => false,
+      '#required' => TRUE,
+      '#resizable' => FALSE,
       '#return_value' => 30,
       '#rows' => 10,
       '#size' => 11,
       '#suffix' => '</div>',
       '#theme' => 'theme_function',
       '#title' => 'Fake Title',
-      '#tree' => true,
+      '#tree' => TRUE,
       '#weight' => 100
     );
     $form_element = new FormElement($form);
@@ -128,7 +128,7 @@ class ObjectiveForms_FormElement_TestCase extends DrupalUnitTestCase {
       $this->assertEqual($form_element->$_key, $value, "Accessed $key via Get");
     }
     $output = $form_element->toArray();
-    foreach($form as $key => $value) {
+    foreach ($form as $key => $value) {
       $this->assertEqual($output[$key], $value, "toArray() output matched for $key.");
     }
   }

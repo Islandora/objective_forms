@@ -125,7 +125,7 @@ class FormElement implements ArrayAccess {
       if (is_array($control)) {
         $this->controls[$key] = array_copy_recursive($control);
       }
-      else if (is_object($control)) {
+      elseif (is_object($control)) {
         $this->controls[$key] = clone $control;
       }
     }
@@ -296,10 +296,10 @@ class FormElement implements ArrayAccess {
     if ($this->protected->has($name)) {
       return $this->protected->$name;
     }
-    else if ($this->offsetExists("#$name")) { // Control
+    elseif ($this->offsetExists("#$name")) { // Control
       return $this->offsetGet("#$name");
     }
-    else if ($this->offsetExists($name)) { // Child
+    elseif ($this->offsetExists($name)) { // Child
       return $this->offsetGet($name);
     }
     return NULL;
@@ -352,10 +352,10 @@ class FormElement implements ArrayAccess {
     if ($this->protected->has($name)) {
       unset($this->protected->$name);
     }
-    else if ($this->offsetExists($name)) { // Child
+    elseif ($this->offsetExists($name)) { // Child
       $this->offsetUnset($name);
     }
-    else if ($this->offsetExists("#$name")) { // Control
+    elseif ($this->offsetExists("#$name")) { // Control
       $this->offsetUnset("#$name");
     }
   }
@@ -405,7 +405,7 @@ class FormElement implements ArrayAccess {
     if (is_or_descends_from($value, 'FormElement')) {
       $this->adopt($value, $offset);
     }
-    else if (element_property($offset)) {
+    elseif (element_property($offset)) {
       $this->controls[$offset] = $value;
     }
   }
@@ -420,7 +420,7 @@ class FormElement implements ArrayAccess {
     if (isset($this->children[$offset])) {
       unset($this->children[$offset]);
     }
-    else if (isset($this->controls[$offset])) {
+    elseif (isset($this->controls[$offset])) {
       unset($this->controls[$offset]);
     }
   }
