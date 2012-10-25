@@ -174,7 +174,7 @@ class Form implements ArrayAccess {
       module_load_include('inc', 'objective_forms', 'FormPopulator');
       $populator = new FormPopulator(new FormValues($form_state, $form, $this->registry), $form_state);
       $populator->populate($form);
-      if(isset($form_state['triggering_element'])) {
+      if(isset($form_state['triggering_element']) && array_key_exists('#ajax', $form_state['triggering_element'])) {
 	$this->ajaxAlter($form, $form_state, $form_state['triggering_element']);
       }
     }
