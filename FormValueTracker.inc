@@ -52,7 +52,7 @@ class FormValueTracker {
   public function __construct(array &$values, FormElementRegistry $registry) {
     $this->values = &$values;
     $this->current = &$this->values;
-    $this->track = false; // Default value is false.
+    $this->track = FALSE; // Default value is FALSE.
     $this->registry = $registry;
   }
 
@@ -87,7 +87,7 @@ class FormValueTracker {
       $parents = $element['#array_parents'];
       return array_pop($parents);
     }
-    else if (isset($element['#hash'])) {
+    elseif (isset($element['#hash'])) {
       $found = $this->registry->get($element['#hash']);
       if ($found) {
         return $found->getIndex();
@@ -107,10 +107,10 @@ class FormValueTracker {
    */
   private function track(array &$element) {
     if ($this->shouldStartTracking($element)) {
-      $this->track = true;
+      $this->track = TRUE;
     }
     if ($this->shouldStopTracking($element)) {
-      $this->track = false;
+      $this->track = FALSE;
       $this->reset();
     }
     $index = $this->getIndex($element);

@@ -7,10 +7,10 @@
 class ObjectiveForms_FormValues_TestCase extends DrupalWebTestCase {
 
   protected $privileged_user;
-  
+
   /**
    * Get Test info.
-   * 
+   *
    * @return array
    *   Properties that are displayed in the test selection form.
    */
@@ -23,7 +23,7 @@ class ObjectiveForms_FormValues_TestCase extends DrupalWebTestCase {
   }
 
   /**
-   * setUp() performs any pre-requisite tasks that need to happen. 
+   * setUp() performs any pre-requisite tasks that need to happen.
    */
   public function setUp() {
     // Enable any modules required for the test.
@@ -37,7 +37,7 @@ class ObjectiveForms_FormValues_TestCase extends DrupalWebTestCase {
     drupal_prepare_form($form_id, $form, $form_state);
     drupal_process_form($form_id, $form, $form_state);
   }
-  
+
   public function tearDown() {
     $this->drupalLogout($this->privileged_user);
     parent::tearDown();
@@ -47,7 +47,7 @@ class ObjectiveForms_FormValues_TestCase extends DrupalWebTestCase {
    * Test constructing the Form definition.
    */
   public function test() {
-    
+
     $form_path = 'objective/forms/test/objective_forms_test_form_values_form';
     $this->drupalGet($form_path);
     $edit = array(
