@@ -4,7 +4,7 @@
  * @file
  *
  */
-class ObjectiveForms_FormValues_TestCase extends DrupalWebTestCase {
+class ObjectiveFormValuesTestCase extends DrupalWebTestCase {
 
   protected $privileged_user;
 
@@ -46,12 +46,12 @@ class ObjectiveForms_FormValues_TestCase extends DrupalWebTestCase {
   /**
    * Test constructing the Form definition.
    */
-  public function test() {
+  public function testConstructingFormDefinition() {
 
     $form_path = 'objective/forms/test/objective_forms_test_form_values_form';
     $this->drupalGet($form_path);
     $edit = array(
-      'first' => 'test value'
+      'first' => 'test value',
     );
     $this->drupalPost($form_path, $edit, 'Submit');
     if (variable_get('test', NULL) == 'TESTING') {
@@ -113,7 +113,7 @@ class ObjectiveForms_FormValues_TestCase extends DrupalWebTestCase {
 /**
  * Test form.
  */
-function objective_forms_test_form_values_form(array &$form_state) {
+function objective_forms_test_form_values_form(array $form, array &$form_state) {
   module_load_include('inc', 'objective_forms', 'Form');
   $drupal_form = array(
     'first' => array(
@@ -122,11 +122,11 @@ function objective_forms_test_form_values_form(array &$form_state) {
     ),
     'submit' => array(
       '#type' => 'submit',
-      '#value' => 'Submit'
-    )
+      '#value' => 'Submit',
+    ),
   );
   $form = new Form($drupal_form, $form_state);
-  return $form->toArray();
+  return $form->toArray($form_state);
 }
 
 function objective_forms_test_form_values_form_submit(array $form, array &$form_state) {

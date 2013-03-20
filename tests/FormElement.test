@@ -9,7 +9,7 @@
 /**
  * Unit Tests for the FormControl class.
  */
-class ObjectiveForms_FormElement_TestCase extends DrupalUnitTestCase {
+class ObjectiveFormElementTestCase extends DrupalUnitTestCase {
 
   /**
    * Get Test info.
@@ -39,7 +39,7 @@ class ObjectiveForms_FormElement_TestCase extends DrupalUnitTestCase {
    */
   public function testCreate() {
     /* Basic - Empty FormElement */
-    $form_element = new FormElement();
+    $form_element = new FormElement(NULL);
     $this->assertNotNull($form_element, 'Created basic FormElement.');
     $this->assertNotNull($form_element->controls, 'The FormElement\'s  FormControl\'s are accessible.');
     $this->assertNotNull($form_element->children, 'The FormElement\'s  Child FormElement\'s are accessible.');
@@ -47,11 +47,11 @@ class ObjectiveForms_FormElement_TestCase extends DrupalUnitTestCase {
     $this->assertEqual(count($form_element->controls), 0, 'Empty Set of Children created.');
     $this->assertNull($form_element->parent, 'FormElement\'s parent FormElement is undefined.');
     /* Basic - Adding children aka Adopting */
-    $child_1 = new FormElement();
+    $child_1 = new FormElement(NULL);
     $form_element->child_1 = $child_1; // Use __set
     $this->assertEqual($form_element->child_1, $child_1, 'Child element set/get via __get/__set methods.');
     $this->assertEqual($form_element['child_1'], $child_1, 'Child element set via __set and got via array access interface.');
-    $child_2 = new FormElement();
+    $child_2 = new FormElement(NULL);
     $form_element['child_2'] = $child_2; // Use Array interface
     $this->assertEqual($form_element['child_2'], $child_2, 'Child element set via array interface and got via array interface.');
     $this->assertEqual($form_element->child_2, $child_2, 'Child element set via array interface and got via __get.');
@@ -89,7 +89,7 @@ class ObjectiveForms_FormElement_TestCase extends DrupalUnitTestCase {
         'path' => 'poll/js',
         'wrapper' => 'poll-choices',
         'method' => 'replace',
-        'effect' => 'fade'
+        'effect' => 'fade',
       ),
       '#attributes' => array('class' => 'ui-form'),
       '#autocomplete_path' => '/xml/forms',
@@ -119,9 +119,10 @@ class ObjectiveForms_FormElement_TestCase extends DrupalUnitTestCase {
       '#theme' => 'theme_function',
       '#title' => 'Fake Title',
       '#tree' => TRUE,
-      '#weight' => 100
+      '#weight' => 100,
     );
-    $form_element = new FormElement($form);
+    $form_element = new FormElement(NULL, $form);
+
     foreach ($form as $key => $value) {
       $_key = trim($key, '#');
       $this->assertEqual($form_element[$key], $value, "Accessed $key via Array");
@@ -143,10 +144,10 @@ class ObjectiveForms_FormElement_TestCase extends DrupalUnitTestCase {
         '#title' => 'first',
         'second' => array(
           '#title' => 'second',
-        )
+        ),
       ),
     );
-    $form_element = new FormElement($form);
+    $form_element = new FormElement(NULL, $form);
     $this->assertNotNull($form_element, 'Created FormElement from drupal definition.');
     $this->assertNotNull($form_element->first, 'Created FormElement child.');
     $this->assertNotNull($form_element->first->second, 'Created FormElement grand child.');
@@ -161,9 +162,9 @@ class ObjectiveForms_FormElement_TestCase extends DrupalUnitTestCase {
       ),
       'second' => array(
         '#title' => 'second',
-      )
+      ),
     );
-    $form_element = new FormElement($form);
+    $form_element = new FormElement(NULL, $form);
     $form_element->eachChild(array($this, '_testEachChild'), '#test', 'test');
     $this->assertEqual($form_element->first->test, 'test', 'Set a property on the first child via eachChild()');
     $this->assertEqual($form_element->second->test, 'test', 'Set a property on the second child via eachChild()');
@@ -178,14 +179,14 @@ class ObjectiveForms_FormElement_TestCase extends DrupalUnitTestCase {
           '#title' => 'second',
           'third' => array(
             '#title' => 'third',
-          )
-        )
+          ),
+        ),
       ),
       'fourth' => array(
-        '#title' => 'fourth'
-      )
+        '#title' => 'fourth',
+      ),
     );
-    $form_element = new FormElement($form);
+    $form_element = new FormElement(NULL, $form);
     $form_element->eachDecendant(array($this, '_testEachChild'), '#test', 'test');
     $this->assertEqual($form_element->first->test, 'test', 'Set a property on the first child via eachDecendant()');
     $this->assertEqual($form_element->first->second->test, 'test', 'Set a property on the second child via eachDecendant()');
