@@ -57,7 +57,10 @@ class FormElement implements ArrayAccess {
   public function __construct(FormElementRegistry $registry = NULL /* yuck fix this.. */, array $form = NULL) {
     $this->protected = new ReadOnlyProtectedMembers(array('parent' => NULL, 'hash' => NULL));
     $this->registry = $registry;
-    $this->controls = array();
+    $this->controls = array(
+      // Hack for https://jira.duraspace.org/browse/ISLANDORA-545.
+      '#wysiwyg' => FALSE,
+    );
     $this->children = array();
     $this->initialize($form);
     $this->hash = isset($this->controls['#hash']) ? $this->controls['#hash'] : spl_object_hash($this);
