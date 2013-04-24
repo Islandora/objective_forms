@@ -118,7 +118,7 @@ class FormProperty {
       return self::Create($name, $value);
     }
 
-    if(is_array($value) {
+    if(is_array($value)) {
       array_walk($value, 'trim');
     }
     else {
