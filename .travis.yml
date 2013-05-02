@@ -14,7 +14,7 @@ before_install:
   - $HOME/islandora/tests/scripts/travis_setup.sh
   - cd $HOME/drupal-*
   - ln -s $TRAVIS_BUILD_DIR sites/all/modules/objective_forms
-  - drush en --yes objective_forms
+  - drush esn --yes objective_forms
 script:
   - ant -buildfile sites/all/modules/objective_forms/build.xml lint
   - $ISLANDORA_DIR/tests/scripts/line_endings.sh sites/all/modules/objective_forms
