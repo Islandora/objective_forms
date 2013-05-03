@@ -16,6 +16,7 @@ before_install:
   - ln -s $TRAVIS_BUILD_DIR sites/all/modules/objective_forms
   - git clone -b 7.x git://github.com/Islandora/php_lib.git
   - ln -s $TRAVIS_BUILD_DIR sites/all/modules/php_lib
+  - drush en --yes php_lib
   - drush en --yes objective_forms
 script:
   - ant -buildfile sites/all/modules/objective_forms/build.xml lint
