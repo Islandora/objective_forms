@@ -2,10 +2,7 @@
 
 /**
  * @file
- *
- * Defines a class that allows drupal forms to be built via objects instead of arrays. Note that is still possible to
- * build non functional drupal forms using this class, the same rules apply that would normally apply to a Drupal API
- * Form.
+ * Defines a class that allows drupal forms to be built via objects instead of arrays. Note that is still possible to build non functional drupal forms using this class, the same rules apply that would normally apply to a Drupal API Form.
  */
 module_load_include('inc', 'objective_forms', 'FormElement');
 module_load_include('inc', 'objective_forms', 'FormStorage');
@@ -58,11 +55,11 @@ class Form implements ArrayAccess {
 
   // Apply ajax alters to the form.
   public function ajaxAlter(array &$form, array &$form_state, array $triggering_element) {
-    if($form['#hash'] == $form_state['triggering_element']['#ajax']['params']['target']) {
+    if ($form['#hash'] == $form_state['triggering_element']['#ajax']['params']['target']) {
       $element = $this->findElement($form['#hash']);
       drupal_alter("form_element_{$element->type}_ajax", $element, $form, $form_state);
     }
-    foreach(element_children($form) as $child) {
+    foreach (element_children($form) as $child) {
       $this->ajaxAlter($form[$child], $form_state, $triggering_element);
     }
   }
@@ -170,12 +167,13 @@ class Form implements ArrayAccess {
    */
   public function toArray(array &$form_state) {
     $form = $this->root->toArray();
-    if (isset($form_state['values'])) { //@todo see if its nesscary to store this varible with the instance.
+    // @todo see if its nesscary to store this varible with the instance.
+    if (isset($form_state['values'])) {
       module_load_include('inc', 'objective_forms', 'FormPopulator');
       $populator = new FormPopulator(new FormValues($form_state, $form, $this->registry), $form_state);
       $populator->populate($form);
-      if(isset($form_state['triggering_element']) && array_key_exists('#ajax', $form_state['triggering_element'])) {
-	$this->ajaxAlter($form, $form_state, $form_state['triggering_element']);
+      if (isset($form_state['triggering_element']) && array_key_exists('#ajax', $form_state['triggering_element'])) {
+      	$this->ajaxAlter($form, $form_state, $form_state['triggering_element']);
       }
     }
     return $form;

@@ -217,6 +217,4 @@ class FormElementRegistry {
       $this->cloned = array();
     }
   }
-
 }
-

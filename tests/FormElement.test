@@ -38,7 +38,7 @@ class ObjectiveFormElementTestCase extends DrupalUnitTestCase {
    * Test constructing the Form definition.
    */
   public function testCreate() {
-    /* Basic - Empty FormElement */
+    // Basic - Empty FormElement.
     $form_element = new FormElement(NULL);
     $this->assertNotNull($form_element, 'Created basic FormElement.');
     $this->assertNotNull($form_element->controls, 'The FormElement\'s  FormControl\'s are accessible.');
@@ -46,30 +46,33 @@ class ObjectiveFormElementTestCase extends DrupalUnitTestCase {
     $this->assertEqual(count($form_element->controls), 0, 'Empty Set of Controls created.');
     $this->assertEqual(count($form_element->controls), 0, 'Empty Set of Children created.');
     $this->assertNull($form_element->parent, 'FormElement\'s parent FormElement is undefined.');
-    /* Basic - Adding children aka Adopting */
+    // Basic - Adding children aka Adopting.
     $child_1 = new FormElement(NULL);
-    $form_element->child_1 = $child_1; // Use __set
+    // Use __set.
+    $form_element->child_1 = $child_1;
     $this->assertEqual($form_element->child_1, $child_1, 'Child element set/get via __get/__set methods.');
     $this->assertEqual($form_element['child_1'], $child_1, 'Child element set via __set and got via array access interface.');
     $child_2 = new FormElement(NULL);
-    $form_element['child_2'] = $child_2; // Use Array interface
+    // Use Array interface.
+    $form_element['child_2'] = $child_2;
     $this->assertEqual($form_element['child_2'], $child_2, 'Child element set via array interface and got via array interface.');
     $this->assertEqual($form_element->child_2, $child_2, 'Child element set via array interface and got via __get.');
-    /* Basic - Parents set correctly */
+    // Basic - Parents set correctly.
     $this->assertIdentical($form_element, $child_1->parent, 'Child element\'s parent set correctly from __set.');
     $this->assertIdentical($form_element, $child_2->parent, 'Child element\'s parent set correctly from array interface.');
-    /* Basic - Orphaning Children */
+    // Basic - Orphaning Children.
     $child_1->orphan();
     $this->assertNull($child_1->parent, 'Child no longer references parent after being orphaned.');
     $this->assertNull($form_element->child_1, 'Parent no longer references orphaned child.');
-    /* Basic - Adding controls */
+    // Basic - Adding controls.
     $form_element->type = 'textfield';
     $this->assertEqual($form_element->type, 'textfield', 'Control set/get via __get/__set methods.');
     $this->assertEqual($form_element['#type'], 'textfield', 'Control set via __set and got via array access interface.');
-    $form_element['#title'] = 'test title'; // Use Array interface
+    // Use Array interface.
+    $form_element['#title'] = 'test title';
     $this->assertEqual($form_element['#title'], 'test title', 'Control set via array interface and got via array interface.');
     $this->assertEqual($form_element->title, 'test title', 'Control set via array interface and got via __get.');
-    /* Basic - Copying (Expected to do deep copies) */
+    // Basic - Copying (Expected to do deep copies).
     $form_element->child_1 = $child_1; // Adopt
     $clone = clone $child_1;
     $this->assertNotEqual($child_1->hash, $clone->hash, 'Cloned Form Element has different hash.');

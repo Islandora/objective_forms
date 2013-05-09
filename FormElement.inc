@@ -2,10 +2,9 @@
 
 /**
  * @file
- *
- * Defines a FormElement class for encapsulating Drupal form elements. Each FormElement class has a unique #hash
- * property that can be used to identify that FormElement.
+ * Defines a FormElement class for encapsulating Drupal form elements. Each FormElement class has a unique #hash property that can be used to identify that FormElement.
  */
+
 module_load_include('inc', 'php_lib', 'ReflectionHelpers');
 module_load_include('inc', 'php_lib', 'ReadOnlyProtectedMembers');
 module_load_include('inc', 'objective_forms', 'Utils');
@@ -61,7 +60,8 @@ class FormElement implements ArrayAccess {
     $this->children = array();
     $this->initialize($form);
     $this->hash = isset($this->controls['#hash']) ? $this->controls['#hash'] : spl_object_hash($this);
-    if ($this->registry) { // Deals with this case this class is used in a non user context ....
+    // Deals with this case this class is used in a non user context.
+    if ($this->registry) {
       $this->registry->registerCreated($this);
     }
   }
@@ -118,9 +118,11 @@ class FormElement implements ArrayAccess {
   public function __clone() {
     $original_hash = $this->hash;
     $this->protected = clone $this->protected;
-    $this->parent = NULL; // The parent was unaware of this cloned bastard child of science...
-    $this->hash = spl_object_hash($this); // Maintain uniqueness.
-    // Clone Controls
+    // The parent was unaware of this cloned bastard child of science.
+    $this->parent = NULL;
+    // Maintain uniqueness.
+    $this->hash = spl_object_hash($this);
+    // Clone Controls.
     foreach ($this->controls as $key => $control) {
       if (is_array($control)) {
         $this->controls[$key] = array_copy_recursive($control);
@@ -132,10 +134,12 @@ class FormElement implements ArrayAccess {
     // Clone Children.
     $children = $this->children;
     $this->children = array();
-    foreach ($children as $key => $child) { // Clone Children.
+    // Clone Children.
+    foreach ($children as $key => $child) {
       $this->adopt(clone $child, $key);
     }
-    if ($this->registry) { // Deals with this case this class is used in a non user context ....
+    // Deals with this case this class is used in a non user context.
+    if ($this->registry) {
       $this->registry->registerClone($original_hash, $this);
     }
   }
@@ -168,8 +172,9 @@ class FormElement implements ArrayAccess {
    * Converts the tree like structure of a FormElement and its children to a flat array.
    *
    * @return array
-   *   An array containing this FormElement and all of its children, where its keys are the FormElements unique #hash
-   *   properties. For example: array(#hash=>FormElement)
+   *   An array containing this FormElement and all of its children, where its
+   *   keys are the FormElements unique #hash properties.
+   *   For example: array(#hash=>FormElement)
    */
   public function flatten() {
     $elements = array();
@@ -192,11 +197,12 @@ class FormElement implements ArrayAccess {
    * @param callback $function
    *   The function to be called repeatedly.
    *
-   * @return boolean
+   * @return bool
    *   TRUE if the function was called for all child FormElements, FALSE otherwise.
    */
   public function eachChild($function) {
-    $param_arr = array_slice(func_get_args(), 1); // Remove function name from the argument list
+    // Remove function name from the argument list.
+    $param_arr = array_slice(func_get_args(), 1);
     foreach ($this->children as $child) {
       $args = array_merge(array($child), $param_arr);
       if (call_user_func_array($function, $args) === FALSE) {
@@ -207,21 +213,19 @@ class FormElement implements ArrayAccess {
   }
 
   /**
-   * Takes a callback, and calls it repeatedly passing each control/property to the callback
-   * with the name of the control/property as the first parameter and the value of the control/property
-   * as the second paramter. Any other parameters passed to this function will be passed to the
-   * callback as additional parameters.
+   * Takes a callback, and calls it repeatedly passing each control/property to the callback with the name of the control/property as the first parameter and the value of the control/property as the second paramter. Any other parameters passed to this function will be passed to the callback as additional parameters.
    *
    * If the callback returns FALSE, then processing stops and this function exits.
    *
    * @param callback $function
    *   The function to be called repeatedly.
    *
-   * @return boolean
+   * @return bool
    *   TRUE if the function was called for all controls/properties, FALSE otherwise.
    */
   public function eachControl($function) {
-    $param_arr = array_slice(func_get_args(), 1); // Remove function name from the argument list
+    // Remove function name from the argument list.
+    $param_arr = array_slice(func_get_args(), 1);
     foreach ($this->controls as $key => &$control) {
       $args = array_merge(array($key, &$control), $param_arr);
       if (call_user_func_array($function, $args) === FALSE) {
@@ -242,29 +246,32 @@ class FormElement implements ArrayAccess {
    *
    * @param callback $function
    *   The function to be called repeatedly.
-   * @return boolean
+   *
+   * @return bool
    *   TRUE if the function was called for all decendants, FALSE otherwise.
    */
   public function eachDecendant($function) {
     $func_args = func_get_args();
-    $param_arr = array_slice($func_args, 1); // Remove function name from the argument list
+    // Remove function name from the argument list.
+    $param_arr = array_slice($func_args, 1);
     $func_args = func_get_args();
     foreach ($this->children as $child) {
       $args = array_merge(array($child), $param_arr);
       if (call_user_func_array($function, $args) === FALSE) {
-        return FALSE; // End processing
+        // End processing.
+        return FALSE;
       }
-      if (call_user_func_array(array($child, 'eachDecendant'), $func_args) === FALSE) { // Recurse...
-        return FALSE; // End processing
+      // Recurse...
+      if (call_user_func_array(array($child, 'eachDecendant'), $func_args) === FALSE) {
+        // End processing.
+        return FALSE;
       }
     }
-    return TRUE; // Continue processing
+    return TRUE;
   }
 
   /**
-   * Takes a callback, and calls it repeatedly passing itself and each decendant FormElement to the callback
-   * as the first parameter. Any other parameters passed to this function will be passed to the
-   * callback as additional parameters.
+   * Takes a callback, and calls it repeatedly passing itself and each decendant FormElement to the callback as the first parameter. Any other parameters passed to this function will be passed to the callback as additional parameters.
    *
    * Unlike eachDecendant() this object is also used.
    *
@@ -272,7 +279,8 @@ class FormElement implements ArrayAccess {
    *
    * @param callback $function
    *   The function to be called repeatedly.
-   * @return boolean
+   *
+   * @return bool
    *   TRUE if the function was called for all decendants, FALSE otherwise.
    */
   public function each($function) {
@@ -289,6 +297,7 @@ class FormElement implements ArrayAccess {
    *
    * @param mixed $name
    *   The name of the child FormElement, control/property, or ProtectedReadOnlyMember.
+   *
    * @return mixed
    *   The child FormElement, control/property, or ProtectedReadOnlyMember identified by $name if found, NULL otherwise.
    */
@@ -296,10 +305,12 @@ class FormElement implements ArrayAccess {
     if ($this->protected->has($name)) {
       return $this->protected->$name;
     }
-    elseif ($this->offsetExists("#$name")) { // Control
+    // Control.
+    elseif ($this->offsetExists("#$name")) {
       return $this->offsetGet("#$name");
     }
-    elseif ($this->offsetExists($name)) { // Child
+    // Child.
+    elseif ($this->offsetExists($name)) {
       return $this->offsetGet($name);
     }
     return NULL;
@@ -352,10 +363,12 @@ class FormElement implements ArrayAccess {
     if ($this->protected->has($name)) {
       unset($this->protected->$name);
     }
-    elseif ($this->offsetExists($name)) { // Child
+    // Child.
+    elseif ($this->offsetExists($name)) {
       $this->offsetUnset($name);
     }
-    elseif ($this->offsetExists("#$name")) { // Control
+    // Control.
+    elseif ($this->offsetExists("#$name")) {
       $this->offsetUnset("#$name");
     }
   }
@@ -380,6 +393,7 @@ class FormElement implements ArrayAccess {
    *
    * @param mixed $offset
    *   The name of the child FormElement or control/property.
+   *
    * @return mixed
    *   If found, this function will return either a child FormElement or a FormControl.
    */
@@ -460,7 +474,7 @@ class FormElement implements ArrayAccess {
   /**
    * Orphans this FormElement, and removes the relationship its parent FormElement has with it.
    *
-   * @return boolean
+   * @return bool
    *   TRUE if the element was orphaned FALSE otherwise.
    */
   public function orphan() {
@@ -478,7 +492,7 @@ class FormElement implements ArrayAccess {
    * @param FormElement $remove
    *   The child FormElement to remove.
    *
-   * @return boolean
+   * @return bool
    *   TRUE if the child was removed, FALSE otherwise.
    */
   private function orphanChild(FormElement $remove) {
@@ -513,7 +527,7 @@ class FormElement implements ArrayAccess {
    *
    * @return string
    *  Describes the location of this FormElement within the Form.
-   *   For example ['author']['name']
+   *  For example ['author']['name'].
    */
   public function getLocation() {
     $index = $this->getIndex();
@@ -558,5 +572,4 @@ class FormElement implements ArrayAccess {
       $output[$name] = $child->toArray();
     }
   }
-
 }

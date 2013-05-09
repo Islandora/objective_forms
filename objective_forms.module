@@ -73,7 +73,8 @@ function objective_forms_menu() {
  * @return html
  */
 function objective_forms_test($form_name) {
-  objective_forms_test_load_files(); // Load all test files
+  // Load all test files.
+  objective_forms_test_load_files();
   // TODO  needs to have $form as its first parameter.
   return drupal_get_form($form_name);
 }
