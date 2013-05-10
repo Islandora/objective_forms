@@ -55,7 +55,7 @@ function &find_child_element(array &$form, $hash) {
  * @param hash $hash
  *   The unique #hash property that identifies the FormElement.
  *
- * @return boolean
+ * @return bool
  *   TRUE if the given element's hash matches, FALSE otherwise.
  */
 function has_hash(array &$element, $hash) {
@@ -70,8 +70,9 @@ function has_hash(array &$element, $hash) {
  *
  * Only works on processed form elements.
  *
- * The name of the form element is based on the #parents property of your form element.
- * If it is array('foo', 'bar', 'baz') then 'foo][bar][baz' is the elements name.
+ * The name of the form element is based on the #parents property of your form
+ * element. If it is array('foo', 'bar', 'baz') then 'foo][bar][baz' is the
+ * elements name.
  *
  * @param array $element
  *   The Drupal form element.
@@ -96,7 +97,7 @@ function form_element_name(array $element) {
  * @param string $child
  *   A Drupal form element name for the assumed child form element.
  *
- * @return boolean
+ * @return bool
  *   TRUE if the given element
  */
 function form_element_is_child($parent, $child) {

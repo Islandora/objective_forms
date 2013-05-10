@@ -54,7 +54,7 @@ class FormStorage {
    * @param string $name
    *   The stored variables name.
    *
-   * @return boolean
+   * @return bool
    *   TRUE if the variable exists in storage, FALSE otherwise.
    */
   public function __isset($name) {

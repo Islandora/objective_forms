@@ -2,7 +2,6 @@
 
 /**
  * @file
- *
  * Defines an Interface for converting FormElement properties dynamically into Object and back into Scalar Values
  */
 
@@ -22,7 +21,8 @@ interface FormPropertyInterface {
    * Converts this object to a Drupal Form Property value.
    *
    * @return mixed
-   *   Returns a scalar or array repersentation of this class, which can be used within a Drupal Form.
+   *   Returns a scalar or array repersentation of this class, which can be used
+   *   within a Drupal Form.
    */
   public function toDrupalForm();
 }

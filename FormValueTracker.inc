@@ -2,10 +2,9 @@
 
 /**
  * @file
- *
  * Defines the FormValueTracker class that is used by only the FormValues class.
- *
  */
+
 module_load_include('inc', 'objective_forms', 'FormElement');
 module_load_include('inc', 'objective_forms', 'FormElementRegistry');
 
@@ -40,7 +39,7 @@ class FormValueTracker {
   /**
    * TRUE if we are tracking a location in the values array, FALSE if not.
    *
-   * @var boolean
+   * @var bool
    */
   protected $track;
 
@@ -52,7 +51,8 @@ class FormValueTracker {
   public function __construct(array &$values, FormElementRegistry $registry) {
     $this->values = &$values;
     $this->current = &$this->values;
-    $this->track = FALSE; // Default value is FALSE.
+    // Default value is FALSE.
+    $this->track = FALSE;
     $this->registry = $registry;
   }
 
@@ -70,7 +70,8 @@ class FormValueTracker {
   public function getValue(array &$element) {
     module_load_include('inc', 'objective_forms', 'FormElementRegistry');
     $value = $this->track($element);
-    return is_array($value) ? NULL : $value; // Array's are roots of #tree branchs
+    // Array's are roots of #tree branchs
+    return is_array($value) ? NULL : $value;
   }
 
   /**
@@ -103,7 +104,8 @@ class FormValueTracker {
    *   An element in the Drupal Form.
    *
    * @return mixed
-   *   The value of the current position in the values tree. Typically a array or a scalar value.
+   *   The value of the current position in the values tree. Typically an array
+   *   or a scalar value.
    */
   private function track(array &$element) {
     if ($this->shouldStartTracking($element)) {
@@ -127,8 +129,9 @@ class FormValueTracker {
    * @param array $element
    *   An element in the Drupal Form.
    *
-   * @return boolean
-   *   TRUE if the tracker should start to track values, FALSE if it is already tracking or shouldn't start tracking.
+   * @return bool
+   *   TRUE if the tracker should start to track values, FALSE if it is already
+   *   tracking or shouldn't start tracking.
    */
   private function shouldStartTracking(array &$element) {
     return (isset($element['#tree']) && $element['#tree'] === TRUE) && !$this->track;
@@ -140,8 +143,9 @@ class FormValueTracker {
    * @param array $element
    *   An element in the Drupal Form.
    *
-   * @return boolean
-   *   TRUE if the tracker should stop tracking values, FALSE if it is not tracking or should continue tracking.
+   * @return bool
+   *   TRUE if the tracker should stop tracking values, FALSE if it is not
+   *   tracking or should continue tracking.
    */
   private function shouldStopTracking(array &$element) {
     return (isset($element['#tree']) && $element['#tree'] === FALSE) && $this->track;
@@ -153,5 +157,4 @@ class FormValueTracker {
   private function reset() {
     $this->current = &$this->values;
   }
-
 }

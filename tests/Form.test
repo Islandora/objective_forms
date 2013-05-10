@@ -33,20 +33,20 @@ class ObjectiveFormTestCase extends DrupalUnitTestCase {
    * Test constructing the Form definition.
    */
   public function testCreate() {
-    /* Basic single form element */
+    // Basic single form element.
     $form = array();
     $form_state = array();
     $form = new Form($form, $form_state);
     $this->assertNotNull($form->storage, 'FormStorage was created.');
     $this->assertNotNull($form->registry, 'FormElementRegistry was created.');
     $this->assertNotNull($form->root, 'The root element was created.');
-    /* Basic Adding properties - Array Access */
+    // Basic Adding properties - Array Access.
     $form['#attributes'] = array('enctype' => 'multipart/form-data');
     $this->assertEqual($form['#attributes']['enctype'], 'multipart/form-data', 'Correctly set form property via array access.');
-    /* Basic Adding properties - Get/Set */
+    // Basic Adding properties - Get/Set.
     $form->attributes = array('enctype' => 'overwrote previous value');
     $this->assertEqual($form->attributes['enctype'], 'overwrote previous value', 'Correctly set form property via get/set.');
-    /* Basic Add Form Element - Array Access */
+    // Basic Add Form Element - Array Access.
     $form_element = new FormElement(NULL, array('#title' => 'first'));
     $form['first'] = $form_element;
     $this->assertIdentical($form['first'], $form_element, 'Correctly set form element via array access.');
@@ -142,6 +142,9 @@ class ObjectiveFormTestCase extends DrupalUnitTestCase {
     $this->assertIdentical($element, $form->first->second, 'findElement found the correct element.');
   }
 
+  /**
+   *
+   */
   public function testCloning() {
     $form = array();
     $form_state = array();
@@ -155,5 +158,4 @@ class ObjectiveFormTestCase extends DrupalUnitTestCase {
     $new_clone = $form->duplicateOriginal($clone->hash);
     $this->assertIdentical($form->first->second, $form->registry->getAncestor($new_clone->hash, 0), 'Ancestory is correct for clone from original.');
   }
-
 }
