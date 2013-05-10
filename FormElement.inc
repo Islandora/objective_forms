@@ -2,7 +2,10 @@
 
 /**
  * @file
- * Defines a FormElement class for encapsulating Drupal form elements. Each FormElement class has a unique #hash property that can be used to identify that FormElement.
+ * Defines a FormElement class for encapsulating Drupal form elements.
+ *
+ * Each FormElement class has a unique #hash property that can be used to
+ * identify that FormElement.
  */
 
 module_load_include('inc', 'php_lib', 'ReflectionHelpers');
@@ -16,9 +19,11 @@ module_load_include('inc', 'objective_forms', 'FormElementRegistry');
 class FormElement implements ArrayAccess {
 
   /**
-   * Holds references to protected variables. Allows for external access and protected writes.
-   *  parent -> Stores a reference to this FormElements Parent. NULL if no parent.
-   *  hash -> A identifier that is unique to this object.
+   * Holds references to protected variables.
+   *
+   * Allows for external access and protected writes. parent -> Stores a
+   * reference to this FormElements Parent. NULL if no parent.
+   * hash -> A identifier that is unique to this object.
    *
    * @var ReadOnlyProtected
    */
@@ -69,8 +74,7 @@ class FormElement implements ArrayAccess {
   /**
    * Initialize this object from a drupal form definition.
    *
-   * Takes the controls/properties/children from the drupal form definition, and creates objects repersenting
-   * elements and properties where appropriate.
+   * Takes the controls/properties/children from the drupal form definition, and creates objects repersenting elements and properties where appropriate.
    *
    * @param array $form
    *   Drupal form definition.
@@ -92,7 +96,8 @@ class FormElement implements ArrayAccess {
     module_load_include('inc', 'objective_forms', 'FormProperty');
     $properties = element_properties($form);
     foreach ($properties as $key) {
-      $this->controls[$key] = FormProperty::Expand($key, $form[$key]); // Objectify the property where appropriate.
+      // Objectify the property where appropriate.
+      $this->controls[$key] = FormProperty::Expand($key, $form[$key]);
     }
   }
 
@@ -186,8 +191,9 @@ class FormElement implements ArrayAccess {
   }
 
   /**
-   * Takes a callback, and calls it repeatedly passing each child FormElement to the callback
-   * as the first parameter. Any other parameters passed to this function will be passed to the
+   * Repeatedly passes a callback each child FormElement as the first parameter.
+   *
+   * Any other parameters passed to this function will be passed to the
    * callback as additional parameters.
    *
    * Unlike eachDecendant() only the immediate children of this FormElement will be used.
@@ -213,7 +219,10 @@ class FormElement implements ArrayAccess {
   }
 
   /**
-   * Takes a callback, and calls it repeatedly passing each control/property to the callback with the name of the control/property as the first parameter and the value of the control/property as the second paramter. Any other parameters passed to this function will be passed to the callback as additional parameters.
+   * Takes a callback, and calls it repeatedly passing each control/property to the callback with the name of the control/property as the first parameter and the value of the control/property as the second paramter.
+   *
+   * Any other parameters passed to this function will be passed to the callback
+   * as additional parameters.
    *
    * If the callback returns FALSE, then processing stops and this function exits.
    *
@@ -237,8 +246,10 @@ class FormElement implements ArrayAccess {
 
   /**
    * Takes a callback, and calls it repeatedly passing each decendant FormElement to the callback
-   * as the first parameter. Any other parameters passed to this function will be passed to the
-   * callback as additional parameters.
+   * as the first parameter.
+   *
+   * Any other parameters passed to this function will be passed to the callback
+   * as additional parameters.
    *
    * Unlike eachChild() even children of children will be used.
    *
@@ -271,7 +282,10 @@ class FormElement implements ArrayAccess {
   }
 
   /**
-   * Takes a callback, and calls it repeatedly passing itself and each decendant FormElement to the callback as the first parameter. Any other parameters passed to this function will be passed to the callback as additional parameters.
+   * Takes a callback, and calls it repeatedly passing itself and each decendant FormElement to the callback as the first parameter.
+   *
+   * Any other parameters passed to this function will be passed to the callback
+   * as additional parameters.
    *
    * Unlike eachDecendant() this object is also used.
    *
@@ -337,8 +351,10 @@ class FormElement implements ArrayAccess {
   }
 
   /**
-   * Checks if a given child FormElement or a control/property identified by $name exists. Also checks for the existance
-   * of values stored in this objects ReadOnlyMembers.
+   * Checks if a given child FormElement or a control/property identified by $name exists.
+   *
+   * Also checks for the existance of values stored in this objects
+   * ReadOnlyMembers.
    *
    * @param mixed $name
    *   The name of the child FormElement, control/property, or ProtectedReadOnlyMember.
@@ -461,7 +477,9 @@ class FormElement implements ArrayAccess {
   }
 
   /**
-   * Sets this FormElements parent to the one provided. Orphaning this FormElement from its previous parent FormElement.
+   * Sets this FormElements parent to the one provided.
+   *
+   * Orphaning this FormElement from its previous parent FormElement.
    *
    * @param FormElement $parent
    *   The new parent FormElement of this FormElement.
