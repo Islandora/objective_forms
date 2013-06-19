@@ -118,17 +118,6 @@ class FormProperty {
       self::LoadFile($name);
       return self::Create($name, $value);
     }
-    if (is_array($value)) {
-      foreach ($value as &$v) {
-        if (is_string($v)) {
-          $v = trim($v);
-        }
-      }
-    }
-    elseif (is_string($value)) {
-      $value = trim($value);
-    }
     return $value;
   }
-
 }
