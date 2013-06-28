@@ -58,12 +58,14 @@ class Form implements ArrayAccess {
 
   // Apply ajax alters to the form.
   public function ajaxAlter(array &$form, array &$form_state, array $triggering_element) {
-    if($form['#hash'] == $form_state['triggering_element']['#ajax']['params']['target']) {
-      $element = $this->findElement($form['#hash']);
-      drupal_alter("form_element_{$element->type}_ajax", $element, $form, $form_state);
-    }
-    foreach(element_children($form) as $child) {
-      $this->ajaxAlter($form[$child], $form_state, $triggering_element);
+    if(isset($form_state['triggering_element']['#ajax']['params'])) {
+      if($form['#hash'] == $form_state['triggering_element']['#ajax']['params']['target']) {
+        $element = $this->findElement($form['#hash']);
+        drupal_alter("form_element_{$element->type}_ajax", $element, $form, $form_state);
+      }
+      foreach(element_children($form) as $child) {
+        $this->ajaxAlter($form[$child], $form_state, $triggering_element);
+      }
     }
   }
 
