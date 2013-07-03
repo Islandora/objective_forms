@@ -2,9 +2,9 @@
 
 /**
  * @file
- *
  * Associates submitted form values with array.
  */
+
 module_load_include('inc', 'objective_forms', 'FormValueTracker');
 module_load_include('inc', 'php_lib', 'DrupalFormHelpers');
 
@@ -22,7 +22,7 @@ class FormValues {
   protected $values;
 
   /**
-   * A helper class that helps determine what values are associated with what elements.
+   * A helper class that matches values to elements.
    *
    * @var FormValueTracker
    */
@@ -34,7 +34,7 @@ class FormValues {
    * @param array $form_state
    *   The Drupal Form State.
    *
-   * @return boolean
+   * @return bool
    *   TRUE if $form_state['values'] exists, FALSE otherwise.
    */
   public static function Exists(array &$form_state) {
@@ -67,7 +67,7 @@ class FormValues {
    * @param FormValueTracker $tracker
    *   A helper class for extracting submitted values.
    */
-  private function setValues(array &$element, FormValueTracker $tracker) {
+  protected function setValues(array &$element, FormValueTracker $tracker) {
     $this->setValue($element, $tracker);
     $children = element_children($element);
     foreach ($children as $key) {
@@ -85,7 +85,7 @@ class FormValues {
    * @param FormValueTracker $tracker
    *   A helper class for extracting submitted values.
    */
-  private function setValue(array &$element, FormValueTracker $tracker) {
+  protected function setValue(array &$element, FormValueTracker $tracker) {
     $value = $tracker->getValue($element);
     if (isset($element['#hash'])) {
       $this->values[$element['#hash']] = $value;
@@ -98,7 +98,7 @@ class FormValues {
    * @param hash $hash
    *   The unique #hash property that identifies the FormElement.
    *
-   * @return boolean
+   * @return bool
    *   TRUE if there is a value for the given FormElement.
    */
   public function hasValue($hash) {
@@ -116,7 +116,18 @@ class FormValues {
    */
   public function getValue($hash) {
     if ($this->hasValue($hash)) {
-      return $this->values[$hash];
+      $value = $this->values[$hash];
+      if (is_array($value)) {
+        foreach ($value as &$v) {
+          if (is_string($v)) {
+            $v = trim($v);
+          }
+        }
+      }
+      elseif (is_string($value)) {
+        $value = trim($value);
+      }
+      return $value;
     }
     return NULL;
   }
@@ -125,7 +136,8 @@ class FormValues {
    * Returns all values.
    *
    * @return array
-   *   The keys of the array are the FormElement's hashs, and the values are the submitted form values.
+   *   The keys of the array are the FormElement's hashs, and the values are the
+   *   submitted form values.
    */
   public function getValues() {
     return $this->values;

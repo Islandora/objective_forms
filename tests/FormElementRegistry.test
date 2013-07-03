@@ -4,7 +4,7 @@
  * @file
  *
  */
-class ObjectiveForms_FormElementRegistry_TestCase extends DrupalUnitTestCase {
+class ObjectiveFormElementRegistryTestCase extends DrupalUnitTestCase {
 
   /**
    * Get Test info.
@@ -32,17 +32,17 @@ class ObjectiveForms_FormElementRegistry_TestCase extends DrupalUnitTestCase {
   /**
    * Test constructing the Form definition.
    */
-  public function test() {
+  public function testRegistry() {
     /* Basic single form element */
-    $registry = FormElementRegistry::getInstance();
-    $form_element = new FormElement();
-    $this->assertTrue($registry->exists($form_element->hash), 'Reference was stored.');
+    $registry = new FormElementRegistry();
+    $form_element = new FormElement($registry);
+    $this->assertTrue($registry->isRegistered($form_element->hash), 'Reference was stored.');
     $this->assertIdentical($form_element, $registry->get($form_element->hash), 'Reference is "identical" to the stored reference.');
     $this->assertFalse($registry->isClone($form_element->hash), 'Reference is not a clone.');
     $this->assertEqual($registry->getAncestory($form_element->hash), array(), 'Ancestory array is empty.');
     /* Clone testing */
     $clone = clone $form_element;
-    $this->assertTrue($registry->exists($clone->hash), 'Reference to clone was stored.');
+    $this->assertTrue($registry->isRegistered($clone->hash), 'Reference to clone was stored.');
     $this->assertIdentical($clone, $registry->get($clone->hash), 'Reference to clone is "identical" to the stored reference.');
     $this->assertTrue($registry->isClone($clone->hash), 'Reference is a clone.');
     $this->assertTrue($registry->hasAncestor($clone->hash, 0), 'Reference does have ancestors.');

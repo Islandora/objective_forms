@@ -2,8 +2,7 @@
 
 /**
  * @file
- *
- * Defines a collection of static function used for converting scalar form properties into objects.
+ * Converts form properties into objects.
  */
 
 /**
@@ -18,8 +17,8 @@ class FormProperty {
    *   For each request $cache the results.
    *
    * @return array
-   *   An array of information required to instantiate FormProperty classes where the names of the form properties
-   *   are the keys in the array.
+   *   An array of information required to instantiate FormProperty classes
+   *   where the names of the form properties are the keys in the array.
    */
   public static function GetRegisteredFormPropertiesTypes() {
     static $cache;
@@ -41,7 +40,7 @@ class FormProperty {
    * @param string $name
    *   Name of the FormProperty we are looking for.
    *
-   * @return boolean
+   * @return bool
    *   TRUE if there is a registered class for the given form property.
    */
   public static function IsRegisteredFormProperty($name) {
@@ -50,13 +49,14 @@ class FormProperty {
   }
 
   /**
-   * Gets the required information for loading and creating a given FormProperty identified by $name.
+   * Gets required information for loading and creating a given FormProperty.
    *
    * @param string $name
    *   Name of the FormProperty we are looking for.
    *
    * @return array
-   *   The required information for loading and creating a given FormProperty if defined for the property $name.
+   *   The required information for loading and creating a given FormProperty if
+   *   defined for the property $name.
    */
   public static function GetProperty($name) {
     if (self::IsRegisteredFormProperty($name)) {
@@ -90,6 +90,7 @@ class FormProperty {
    *   Value to initialize the generated FormProperty object with.
    *
    * @return object
+   *   The class that repersents the given form property.
    */
   public static function Create($name, $value) {
     $property = self::GetProperty($name);
@@ -101,7 +102,7 @@ class FormProperty {
   }
 
   /**
-   * Creates a FormProperty Object if one is defined by $name, otherwise $value is returned.
+   * Creates a FormProperty Object if one is defined by $name.
    *
    * @param string $name
    *   Name of the FormProperty to create.
@@ -109,8 +110,8 @@ class FormProperty {
    *   The value of the form property.
    *
    * @return mixed
-   *   If a FormProperty class is defined for $name, then a FormProperty object is returned, otherwise the parameter
-   *   $value is returned.
+   *   If a FormProperty class is defined for $name, then a FormProperty object
+   *   is returned, otherwise the parameter $value is returned.
    */
   public static function Expand($name, $value) {
     if (self::IsRegisteredFormProperty($name)) {
@@ -119,6 +120,4 @@ class FormProperty {
     }
     return $value;
   }
-
 }
-
