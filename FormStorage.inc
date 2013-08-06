@@ -2,12 +2,13 @@
 
 /**
  * @file
- *
- * Defines a class that is used to persist data for Drupal Forms across requests.
+ * Defines a class that is used to persist data for Drupal Forms across
+ * requests.
  */
 
 /**
- * Stores data in the $form_state['storage'] for use in building/rendering the Form.
+ * Stores data in the $form_state['storage'] for use in building/rendering the
+ * Form.
  */
 class FormStorage {
   /**
@@ -16,14 +17,15 @@ class FormStorage {
   const STORAGE_ROOT = 'objective_form_storage';
 
   /**
-   * A reference to $form_state['storage'][STORAGE_ROOT], this is where all persistant data is kept.
+   * A reference to $form_state['storage'][STORAGE_ROOT], this is where all
+   * persistant data is kept.
    *
    * @var array
    */
   protected $storage;
 
   /**
-   * Creates the FormStorage Singleton
+   * Creates the FormStorage Singleton.
    *
    * @param array $form_state
    *   The Drupal Form State.
@@ -39,7 +41,7 @@ class FormStorage {
    * @param array $form_state
    *   The Drupal Form State.
    */
-  private function initializeFormState(array &$form_state) {
+  protected function initializeFormState(array &$form_state) {
     if (empty($form_state['storage'])) {
       $form_state['storage'] = array();
     }
@@ -54,7 +56,7 @@ class FormStorage {
    * @param string $name
    *   The stored variables name.
    *
-   * @return boolean
+   * @return bool
    *   TRUE if the variable exists in storage, FALSE otherwise.
    */
   public function __isset($name) {

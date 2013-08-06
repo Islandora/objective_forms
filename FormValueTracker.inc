@@ -2,10 +2,9 @@
 
 /**
  * @file
- *
  * Defines the FormValueTracker class that is used by only the FormValues class.
- *
  */
+
 module_load_include('inc', 'objective_forms', 'FormElement');
 module_load_include('inc', 'objective_forms', 'FormElementRegistry');
 
@@ -48,11 +47,13 @@ class FormValueTracker {
    * Creates a FormValues instance.
    *
    * @param array $values
+   *   Array of values
    */
   public function __construct(array &$values, FormElementRegistry $registry) {
     $this->values = &$values;
     $this->current = &$this->values;
-    $this->track = FALSE; // Default value is FALSE.
+    // Default value is FALSE.
+    $this->track = FALSE;
     $this->registry = $registry;
   }
 
@@ -70,7 +71,8 @@ class FormValueTracker {
   public function getValue(array &$element) {
     module_load_include('inc', 'objective_forms', 'FormElementRegistry');
     $value = $this->track($element);
-    return is_array($value) ? NULL : $value; // Array's are roots of #tree branchs
+    // Array's are roots of #tree branchs.
+    return is_array($value) ? NULL : $value;
   }
 
   /**
@@ -82,7 +84,7 @@ class FormValueTracker {
    * @return mixed
    *   The index of the element if found, NULL otherwise.
    */
-  private function getIndex(array &$element) {
+  protected function getIndex(array &$element) {
     if (isset($element['#array_parents'])) {
       $parents = $element['#array_parents'];
       return array_pop($parents);
@@ -97,15 +99,19 @@ class FormValueTracker {
   }
 
   /**
-   * Update the $current pointer so that it is pointing at the correct value. Return the current position.
+   * Function track.
+   * 
+   * Update the $current pointer so that it is pointing at the correct value.
+   * Return the current position.
    *
    * @param array $element
    *   An element in the Drupal Form.
    *
    * @return mixed
-   *   The value of the current position in the values tree. Typically a array or a scalar value.
+   *   The value of the current position in the values tree. Typically a array
+   *   or a scalar value.
    */
-  private function track(array &$element) {
+  protected function track(array &$element) {
     if ($this->shouldStartTracking($element)) {
       $this->track = TRUE;
     }
@@ -127,10 +133,11 @@ class FormValueTracker {
    * @param array $element
    *   An element in the Drupal Form.
    *
-   * @return boolean
-   *   TRUE if the tracker should start to track values, FALSE if it is already tracking or shouldn't start tracking.
+   * @return bool
+   *   TRUE if the tracker should start to track values, FALSE if it is already
+   *   tracking or shouldn't start tracking.
    */
-  private function shouldStartTracking(array &$element) {
+  protected function shouldStartTracking(array &$element) {
     return (isset($element['#tree']) && $element['#tree'] === TRUE) && !$this->track;
   }
 
@@ -140,17 +147,18 @@ class FormValueTracker {
    * @param array $element
    *   An element in the Drupal Form.
    *
-   * @return boolean
-   *   TRUE if the tracker should stop tracking values, FALSE if it is not tracking or should continue tracking.
+   * @return bool
+   *   TRUE if the tracker should stop tracking values, FALSE if it is not
+   *   tracking or should continue tracking.
    */
-  private function shouldStopTracking(array &$element) {
+  protected function shouldStopTracking(array &$element) {
     return (isset($element['#tree']) && $element['#tree'] === FALSE) && $this->track;
   }
 
   /**
    * Reset the $current pointer to the top level of the $values array.
    */
-  private function reset() {
+  protected function reset() {
     $this->current = &$this->values;
   }
 

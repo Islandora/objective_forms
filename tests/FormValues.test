@@ -2,11 +2,15 @@
 
 /**
  * @file
- *
+ * Objective form values test case
  */
+
 class ObjectiveFormValuesTestCase extends DrupalWebTestCase {
 
+  // @codingStandardsIgnoreStart
+  // don't know if this functin is being call all over the place
   protected $privileged_user;
+  // @codingStandardsIgnoreEnd
 
   /**
    * Get Test info.
@@ -23,7 +27,7 @@ class ObjectiveFormValuesTestCase extends DrupalWebTestCase {
   }
 
   /**
-   * setUp() performs any pre-requisite tasks that need to happen.
+   * SetUp() performs any pre-requisite tasks that need to happen.
    */
   public function setUp() {
     // Enable any modules required for the test.
@@ -33,11 +37,17 @@ class ObjectiveFormValuesTestCase extends DrupalWebTestCase {
     $this->drupalLogin($this->privileged_user);
   }
 
+  /**
+   * Function prepForm.
+   */
   public function prepForm($form_id, &$form, &$form_state) {
     drupal_prepare_form($form_id, $form, $form_state);
     drupal_process_form($form_id, $form, $form_state);
   }
 
+  /**
+   * Function tearDown.
+   */
   public function tearDown() {
     $this->drupalLogout($this->privileged_user);
     parent::tearDown();
@@ -61,57 +71,10 @@ class ObjectiveFormValuesTestCase extends DrupalWebTestCase {
       $this->pass('It failed!');
     }
   }
-
-  public function testTree() {
-    /* $form_state = array(
-      'values' => array(
-      'first' => array(
-      'second' => '_second',
-      'third' => array(
-      'fourth' => '_fourth'
-      )
-      )
-      ),
-      );
-      $form = array(
-      'first' => array(
-      '#tree' => TRUE,
-      '#title' => 'first',
-      '#hash' => 1,
-      'second' => array(
-      '#title' => 'second',
-      '#hash' => 2,
-      ),
-      'third' => array(
-      '#title' => 'third',
-      '#hash' => 3,
-      'fourth' => array(
-      '#title' => 'forth',
-      '#hash' => 4,
-      )
-      ),
-      ),
-      );
-      $values = new FormValues($form_state, $form);
-      $this->assertNotNull($values, "Create FormValues.");
-      $value = $values->getValue(1);
-      $expected = NULL;
-      $this->assertEqual($value, $expected);
-      $value = $values->getValue(2);
-      $expected = '_second';
-      $this->assertEqual($value, $expected);
-      $value = $values->getValue(3);
-      $expected = NULL;
-      $this->assertEqual($value, $expected);
-      $value = $values->getValue(4);
-      $expected = '_fourth';
-      $this->assertEqual($value, $expected); */
-  }
-
 }
 
 /**
- * Test form.
+ * Test test_form_values_form.
  */
 function objective_forms_test_form_values_form(array $form, array &$form_state) {
   module_load_include('inc', 'objective_forms', 'Form');
@@ -129,6 +92,9 @@ function objective_forms_test_form_values_form(array $form, array &$form_state) 
   return $form->toArray($form_state);
 }
 
+/**
+ * Function test_form_values_form_submit.
+ */
 function objective_forms_test_form_values_form_submit(array $form, array &$form_state) {
   variable_set('test', 'TESTING');
 }

@@ -2,8 +2,9 @@
 
 /**
  * @file
- *
+ * Form tests.
  */
+
 class ObjectiveFormTestCase extends DrupalUnitTestCase {
 
   /**
@@ -21,6 +22,8 @@ class ObjectiveFormTestCase extends DrupalUnitTestCase {
   }
 
   /**
+   * Function setup.
+   * 
    * setUp() performs any pre-requisite tasks that need to happen.
    */
   public function setUp() {
@@ -55,6 +58,9 @@ class ObjectiveFormTestCase extends DrupalUnitTestCase {
     $this->assertIdentical($form->first, $form_element, 'Correctly set form element via get/set.');
   }
 
+  /**
+   * Function testCreateFromArray.
+   */
   public function testCreateFromArray() {
     $form = array(
       '#attributes' => array(
@@ -95,7 +101,7 @@ class ObjectiveFormTestCase extends DrupalUnitTestCase {
   }
 
   /**
-   *
+   * Function testToArray.
    */
   public function testToArray() {
     $form = array();
@@ -128,7 +134,7 @@ class ObjectiveFormTestCase extends DrupalUnitTestCase {
   }
 
   /**
-   *
+   * Function testFind.
    */
   public function testFind() {
     $form = array();
@@ -142,6 +148,9 @@ class ObjectiveFormTestCase extends DrupalUnitTestCase {
     $this->assertIdentical($element, $form->first->second, 'findElement found the correct element.');
   }
 
+  /**
+   * Function testCloning.
+   */
   public function testCloning() {
     $form = array();
     $form_state = array();

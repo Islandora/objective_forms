@@ -2,11 +2,13 @@
 
 /**
  * @file
- *
- * Defines a class that allows drupal forms to be built via objects instead of arrays. Note that is still possible to
- * build non functional drupal forms using this class, the same rules apply that would normally apply to a Drupal API
+ * Defines a class that allows drupal forms to be built via objects instead of
+ * arrays. Note that is still possible to build non functional drupal forms 
+ * using this class, the same rules apply that would normally apply to a Drupal
+ * API
  * Form.
  */
+
 module_load_include('inc', 'objective_forms', 'FormElement');
 module_load_include('inc', 'objective_forms', 'FormStorage');
 module_load_include('inc', 'objective_forms', 'FormElementRegistry');
@@ -55,15 +57,20 @@ class Form implements ArrayAccess {
     $this->root = new FormElement($this->registry, $form);
   }
 
-
-  // Apply ajax alters to the form.
+  /**
+   * Function ajaxAlter.
+   * 
+   * Apply ajax alters to the form.
+   *
+   * @var FormElementRegistry
+   */
   public function ajaxAlter(array &$form, array &$form_state, array $triggering_element) {
-    if(isset($form_state['triggering_element']['#ajax']['params'])) {
-      if($form['#hash'] == $form_state['triggering_element']['#ajax']['params']['target']) {
+    if (isset($form_state['triggering_element']['#ajax']['params'])) {
+      if ($form['#hash'] == $form_state['triggering_element']['#ajax']['params']['target']) {
         $element = $this->findElement($form['#hash']);
         drupal_alter("form_element_{$element->type}_ajax", $element, $form, $form_state);
       }
-      foreach(element_children($form) as $child) {
+      foreach (element_children($form) as $child) {
         $this->ajaxAlter($form[$child], $form_state, $triggering_element);
       }
     }
@@ -76,18 +83,22 @@ class Form implements ArrayAccess {
    *   The unique #hash property that identifies the FormElement.
    *
    * @return FormElement
+   *   The element
    */
   public function findElement($hash) {
     return $this->root->findElement($hash);
   }
 
   /**
-   * Checks to see if the FormElement identified by its unique $hash exists in this form.
+   * Function hasElement.
+   * 
+   * Checks to see if the FormElement identified by its unique $hash exists in
+   * this form.
    *
    * @param hash $hash
    *   The unique #hash property that identifies the FormElement.
    *
-   * @return boolean
+   * @return bool
    *   TRUE if the FormElement exists within the form, FALSE otherwise.
    */
   public function hasElement($hash) {
@@ -112,7 +123,10 @@ class Form implements ArrayAccess {
   }
 
   /**
-   * Duplicates a FormElement identified by its unique $hash from its original definition.
+   * Function duplicateOriginal.
+   * 
+   * Duplicates a FormElement identified by its unique $hash from its original
+   * definition.
    *
    * @param hash $hash
    *   The unique #hash property that identifies the FormElement.
@@ -149,7 +163,9 @@ class Form implements ArrayAccess {
    * Validates the form.
    *
    * @param array $form
+   *   The form
    * @param array $form_state
+   *   The form state
    */
   public function validate(array &$form, array &$form_state) {
     // Implemented in child classes.
@@ -159,7 +175,9 @@ class Form implements ArrayAccess {
    * Submits the form.
    *
    * @param array $form
+   *   The form
    * @param array $form_state
+   *   The form state
    */
   public function submit(array &$form, array &$form_state) {
     // Implemented in child classes.
@@ -169,15 +187,17 @@ class Form implements ArrayAccess {
    * Outputs the form as an array, which can be used by the Drupal Form API.
    *
    * @return array
+   *   returns the form
    */
   public function toArray(array &$form_state) {
     $form = $this->root->toArray();
-    if (isset($form_state['values'])) { //@todo see if its nesscary to store this varible with the instance.
+    if (isset($form_state['values'])) {
+      // @todo see if its nesscary to store this varible with the instance.
       module_load_include('inc', 'objective_forms', 'FormPopulator');
       $populator = new FormPopulator(new FormValues($form_state, $form, $this->registry), $form_state);
       $populator->populate($form);
-      if(isset($form_state['triggering_element']) && array_key_exists('#ajax', $form_state['triggering_element'])) {
-	$this->ajaxAlter($form, $form_state, $form_state['triggering_element']);
+      if (isset($form_state['triggering_element']) && array_key_exists('#ajax', $form_state['triggering_element'])) {
+        $this->ajaxAlter($form, $form_state, $form_state['triggering_element']);
       }
     }
     return $form;
@@ -187,8 +207,9 @@ class Form implements ArrayAccess {
    * Checks if a child element or property identified by $name exists.
    *
    * @param mixed $name
+   *   The name
    *
-   * @return boolean
+   * @return bool
    *   TRUE if the child element or property exists FALSE otherwise.
    */
   public function __isset($name) {
@@ -199,6 +220,7 @@ class Form implements ArrayAccess {
    * Removes a child element or property identified by $name.
    *
    * @param mixed $name
+   *   The name
    */
   public function __unset($name) {
     unset($this->root->$name);
@@ -208,6 +230,7 @@ class Form implements ArrayAccess {
    * Gets a child element or property identified by $offset.
    *
    * @param mixed $name
+   *   The name
    */
   public function __get($name) {
     return $this->root->$name;
@@ -217,7 +240,9 @@ class Form implements ArrayAccess {
    * Add/Set a child element or property identified by $offset, with $value.
    *
    * @param mixed $name
+   *   The name
    * @param mixed $value
+   *   The value
    */
   public function __set($name, $value) {
     $this->root->$name = $value;
@@ -227,8 +252,9 @@ class Form implements ArrayAccess {
    * Checks if a child element or property identified by $offset exists.
    *
    * @param mixed $offset
+   *   The offset
    *
-   * @return boolean
+   * @return bool
    *   TRUE if the child element or property exists FALSE otherwise.
    */
   public function offsetExists($offset) {
@@ -239,9 +265,11 @@ class Form implements ArrayAccess {
    * Gets a child element or property identified by $offset.
    *
    * @param mixed $offset
+   *   The offset
    *
    * @return mixed
-   *   Gets a child element or property identified by $offset if it exists NULL otherwise.
+   *   Gets a child element or property identified by $offset if it exists
+   *   NULL otherwise.
    */
   public function offsetGet($offset) {
     return $this->root->offsetGet($offset);
@@ -251,7 +279,9 @@ class Form implements ArrayAccess {
    * Add/Set a child element or property identified by $offset, with $value.
    *
    * @param mixed $offset
+   *   The offset
    * @param mixed $value
+   *   The value
    */
   public function offsetSet($offset, $value) {
     $this->root->offsetSet($offset, $value);
@@ -261,6 +291,7 @@ class Form implements ArrayAccess {
    * Removes a child element or property identified by $offset.
    *
    * @param mixed $offset
+   *   The offset
    */
   public function offsetUnset($offset) {
     $this->root->offsetUnset($offset);
@@ -270,9 +301,13 @@ class Form implements ArrayAccess {
    * Creates a string repersentation of this object.
    *
    * @return string
+   *   Returns the root
    */
+  // @codingStandardsIgnoreStart
+  // This function is invalid; only PHP magic methods should be prefixed with a
+  // double underscore
   public function __toString() {
     return (string) $this->root;
   }
-
+  // @codingStandardsIgnoreEnd
 }

@@ -2,8 +2,9 @@
 
 /**
  * @file
- *
+ * Objective form element registry test case
  */
+
 class ObjectiveFormElementRegistryTestCase extends DrupalUnitTestCase {
 
   /**
@@ -21,7 +22,7 @@ class ObjectiveFormElementRegistryTestCase extends DrupalUnitTestCase {
   }
 
   /**
-   * setUp() performs any pre-requisite tasks that need to happen.
+   * SetUp() performs any pre-requisite tasks that need to happen.
    */
   public function setUp() {
     // Enable any modules required for the test.

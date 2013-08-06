@@ -2,8 +2,9 @@
 
 /**
  * @file
- *
+ * Objective Utils test case
  */
+
 class ObjectiveUtilsTestCase extends DrupalUnitTestCase {
 
   /**
@@ -21,7 +22,7 @@ class ObjectiveUtilsTestCase extends DrupalUnitTestCase {
   }
 
   /**
-   * setUp() performs any pre-requisite tasks that need to happen.
+   * SetUp() performs any pre-requisite tasks that need to happen.
    */
   public function setUp() {
     // Enable any modules required for the test.
@@ -39,15 +40,15 @@ class ObjectiveUtilsTestCase extends DrupalUnitTestCase {
         '#title' => 'first',
         'second' => array(
           '#title' => 'second',
-          '#hash' => 2
+          '#hash' => 2,
         ),
         '#hash' => 1,
       ),
       'third' => array(
         '#title' => 'third',
-        '#hash' => 3
+        '#hash' => 3,
       ),
-      '#hash' => 0
+      '#hash' => 0,
     );
     $element = &find_element($form, 0);
     $this->assertIdentical($element, $form);

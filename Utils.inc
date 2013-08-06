@@ -2,8 +2,9 @@
 
 /**
  * @file
- *
+ * Utility functions
  */
+
 module_load_include('inc', 'php_lib', 'Array');
 
 /**
@@ -23,7 +24,10 @@ function &find_element(array &$form, $hash) {
 }
 
 /**
- * Recursively searches the Drupal Form elements children for the element that matches the given hash.
+ * Function find_child_elements.
+ * 
+ * Recursively searches the Drupal Form elements children for the element that
+ * matches the given hash.
  *
  * @param array $form
  *   A Drupal Form Element.
@@ -47,15 +51,17 @@ function &find_child_element(array &$form, $hash) {
 }
 
 /**
- * Checks to see if the given drupal form element has a #hash property and checks
- * to see if it matches the given hash.
+ * Functin has_hash.
+ * 
+ * Checks to see if the given drupal form element has a #hash property and
+ * checks to see if it matches the given hash.
  *
  * @param array $element
  *   A Drupal Form Element.
  * @param hash $hash
  *   The unique #hash property that identifies the FormElement.
  *
- * @return boolean
+ * @return bool
  *   TRUE if the given element's hash matches, FALSE otherwise.
  */
 function has_hash(array &$element, $hash) {
@@ -70,14 +76,16 @@ function has_hash(array &$element, $hash) {
  *
  * Only works on processed form elements.
  *
- * The name of the form element is based on the #parents property of your form element.
- * If it is array('foo', 'bar', 'baz') then 'foo][bar][baz' is the elements name.
+ * The name of the form element is based on the #parents property of your form
+ * element. If it is array('foo', 'bar', 'baz') then 'foo][bar][baz' is the
+ * elements name.
  *
  * @param array $element
  *   The Drupal form element.
  *
  * @return string
- *   The Drupal style name for the given form element if possible, FALSE otherwise.
+ *   The Drupal style name for the given form element if possible, FALSE
+ *   otherwise.
  */
 function form_element_name(array $element) {
   if (isset($element['#parents'])) {
@@ -87,6 +95,8 @@ function form_element_name(array $element) {
 }
 
 /**
+ * Function form_element_is_child.
+ * 
  * Compares two Drupal form element names to determine if the second
  * argument is a child element of the first.
  *
@@ -96,7 +106,7 @@ function form_element_name(array $element) {
  * @param string $child
  *   A Drupal form element name for the assumed child form element.
  *
- * @return boolean
+ * @return bool
  *   TRUE if the given element
  */
 function form_element_is_child($parent, $child) {
