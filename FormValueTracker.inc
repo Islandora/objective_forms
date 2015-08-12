@@ -69,12 +69,97 @@ class FormValueTracker {
    *   Submitted value for the given FormElement if found, NULL otherwise.
    */
   public function getValue(array &$element) {
-    if (!isset($element['#hash'])) {
-      return NULL;
-    }
-
-    $form_element = $this->registry->get($element['#hash']);
-    $value = drupal_array_get_nested_value($this->current, $form_element->getParentsArray());
+    module_load_include('inc', 'objective_forms', 'FormElementRegistry');
+    $value = $this->track($element);
+    // Array's are roots of #tree branchs.
     return is_array($value) ? NULL : $value;
   }
+
+  /**
+   * Get this elements index in its parent.
+   *
+   * @param array $element
+   *   An element in the Drupal Form.
+   *
+   * @return mixed
+   *   The index of the element if found, NULL otherwise.
+   */
+  protected function getIndex(array &$element) {
+    if (isset($element['#array_parents'])) {
+      $parents = $element['#array_parents'];
+      return array_pop($parents);
+    }
+    elseif (isset($element['#hash'])) {
+      $found = $this->registry->get($element['#hash']);
+      if ($found) {
+        return $found->getIndex();
+      }
+    }
+    return NULL;
+  }
+
+  /**
+   * Function track.
+   *
+   * Update the $current pointer so that it is pointing at the correct value.
+   * Return the current position.
+   *
+   * @param array $element
+   *   An element in the Drupal Form.
+   *
+   * @return mixed
+   *   The value of the current position in the values tree. Typically a array
+   *   or a scalar value.
+   */
+  protected function track(array &$element) {
+    if ($this->shouldStartTracking($element)) {
+      $this->track = TRUE;
+    }
+    if ($this->shouldStopTracking($element)) {
+      $this->track = FALSE;
+      $this->reset();
+    }
+    $index = $this->getIndex($element);
+    if ($this->track && isset($this->current[$index])) {
+      $this->current = &$this->current[$index];
+      return $this->current;
+    }
+    return isset($this->current[$index]) ? $this->current[$index] : NULL;
+  }
+
+  /**
+   * Checks if the tracker should begin tracking.
+   *
+   * @param array $element
+   *   An element in the Drupal Form.
+   *
+   * @return bool
+   *   TRUE if the tracker should start to track values, FALSE if it is already
+   *   tracking or shouldn't start tracking.
+   */
+  protected function shouldStartTracking(array &$element) {
+    return (isset($element['#tree']) && $element['#tree'] === TRUE) && !$this->track;
+  }
+
+  /**
+   * Checks if the tracker should stop tracking.
+   *
+   * @param array $element
+   *   An element in the Drupal Form.
+   *
+   * @return bool
+   *   TRUE if the tracker should stop tracking values, FALSE if it is not
+   *   tracking or should continue tracking.
+   */
+  protected function shouldStopTracking(array &$element) {
+    return (isset($element['#tree']) && $element['#tree'] === FALSE) && $this->track;
+  }
+
+  /**
+   * Reset the $current pointer to the top level of the $values array.
+   */
+  protected function reset() {
+    $this->current = &$this->values;
+  }
+
 }
