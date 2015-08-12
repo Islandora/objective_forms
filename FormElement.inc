@@ -51,7 +51,7 @@ class FormElement implements ArrayAccess {
   protected $registry;
 
 
-   /**
+  /**
    * Instantiate's a FormElement.
    *
    * @param array $form

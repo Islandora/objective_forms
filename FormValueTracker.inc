@@ -98,7 +98,7 @@ class FormValueTracker {
     return NULL;
   }
 
-    /**
+  /**
    * Function track.
    *
    * Update the $current pointer so that it is pointing at the correct value.
