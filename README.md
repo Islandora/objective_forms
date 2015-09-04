@@ -41,7 +41,7 @@ Having problems or solved a problem? Check out the Islandora google groups for a
 
 Current maintainers:
 
-* [Nigel Banks](https://github.com/nigelgbanks)
+* [Diego Pino](https://github.com/diegopino)
 
 ## Development
 
