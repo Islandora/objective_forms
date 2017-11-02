@@ -2,7 +2,7 @@
 
 ## Introduction
 
-The Objective Forms module contains a series of functions and classes that allow Drupal forms to be treated as Fedora objects. It provides back-end support to XML Forms so that Drupal's built-in form functions and classes can be used when filling out metadata.
+The Objective Forms module contains a series of functions and classes that allow Drupal forms to be treated as PHP objects. It provides back-end support to XML Forms so that Drupal's built-in form functions and classes can be used when filling out metadata.
 
 Some important notes:
 
