@@ -2,14 +2,14 @@
 
 ## Introduction
 
-The Objective Forms module contains a series of functions and classes that allow Drupal forms to be treated as Fedora objects. It provides back-end support to XML Forms so that Drupal's built-in form functions and classes can be used when filling out metadata.
+The Objective Forms module contains a series of functions and classes that allow Drupal forms to be treated as PHP objects. It provides back-end support to XML Forms so that Drupal's built-in form functions and classes can be used when filling out metadata.
 
 Some important notes:
 
 * Each form element is assigned a unique hash Form Property to identify it, as #hash.
 * Each form element that is created is stored in a registry, and it will persist though out the lifetime of the form even if it's removed from the form. Ancestry of Form Elements is stored, so if a Form Element is cloned we will be able to determine the Form Element that is was cloned from.
 * Form Properties can be objects. To define new Form Properties, implement the hook `objectify_properties`.
-* Forms will be auto-populated from `$form_states['values']`.
+* Forms will be auto-populated from `$form_state['values']`.
 * There is a FormStorage class that can be used to store any persistent data.
 
 ## Requirements
